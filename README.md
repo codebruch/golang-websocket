@@ -24,3 +24,9 @@ After staging the app successfully, run the command `cf app golang` to get the U
 - Open your app in the browser with the `index` path (e.g. `golang.domain.com/index`)
 - Hit the "Send Message" button in the browser
 - If websockets are configured correctly in your CF, there should be logs with the message you sent
+
+Example logs look like 
+```sh
+2017-03-09T15:04:29.91-0800 [APP/PROC/WEB/0]OUT Received back from client: Hello, world!
+2017-03-09T15:04:29.91-0800 [APP/PROC/WEB/0]OUT Sending to client: Received:  Hello, world!
+```
