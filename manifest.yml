@@ -2,5 +2,4 @@
 applications:
 - name: test-websocket
   env:
-    GOVERSION: go1.7
     GOPACKAGENAME: main
