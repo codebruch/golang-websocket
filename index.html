@@ -3,17 +3,22 @@
 <body>
     <script type="text/javascript">
         var sock = null;
-        var wsuri = location.origin.replace(/^http/, 'ws')
+		
+		var echowsuri = location.origin + "/echo"
+        echowsuri = echowsuri.replace(/^http/, 'ws')
+		
+		var getPagewsuri = location.origin + "/GetPage"
+        getPagewsuri = getPagewsuri.replace(/^http/, 'ws')
         //var wsuri = "ws://test-web.ws:";
 
         window.onload = function() {
 
             console.log("onload");
 
-            sock = new WebSocket(wsuri);
+            sock = new WebSocket(echowsuri);
 
             sock.onopen = function() {
-                console.log("connected to " + wsuri);
+                console.log("connected to " + echowsuri);
             }
 
             sock.onclose = function(e) {
@@ -23,11 +28,33 @@
             sock.onmessage = function(e) {
                 console.log("message received: " + e.data);
             }
+			
+			
+			sockgetPage = new WebSocket(getPagewsuri);
+
+            sockgetPage.onopen = function() {
+                console.log("connected to " + getPagewsuri);
+            }
+
+            sockgetPage.onclose = function(e) {
+                console.log("connection closed (" + e.code + ")");
+            }
+
+            sockgetPage.onmessage = function(e) {
+                console.log("message received: " + e.data);
+				document.getElementById("ApiReponse").innerHTML =  e.data;
+            }
         };
 
         function send() {
             var msg = document.getElementById('message').value;
             sock.send(msg);
+        };
+		
+		
+		 function sendgetPage() {
+            var msg = document.getElementById('messagegetPage').value;
+            sockgetPage.send(msg);
         };
     </script>
     <h1>WebSocket Echo Test</h1>
@@ -37,5 +64,14 @@
         </p>
     </form>
     <button onclick="send();">Send Message</button>
+	
+	
+	  <form>
+        <p>
+            API URL to be called: <input id="messagegetPage" type="text" value="http://sap.com">
+        </p>
+    </form>
+    <button onclick="sendgetPage();">Get Page</button>
+	<div id="ApiReponse"></div>
 </body>
 </html>
